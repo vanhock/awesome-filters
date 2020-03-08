@@ -1,0 +1,43 @@
+// ## Colors ##
+$color-base: #000;
+// bg colors
+$color-bg: #f4f2f0;
+$color-bg1: #312c32;
+$color-bg2: #2c152c;
+$color-bg3: #eee3e3;
+$color-bg4: #fefbfb;
+// black colors
+$color-b1: #000;
+$color-b11: #1e1f1e;
+$color-b2: #2e302f;
+$color-b21: #404241;
+$color-b22: #5f6160;
+$color-b3: #8e8d8d;
+$color-b4: #d0d0d0;
+$color-b41: #dcdcdc;
+$color-b5: #f7f7f7;
+$color-b6: #fcfaf8;
+
+$color-w1: #960c6b;
+$color-w2: #7D7D7D;
+$color-w3: #000;
+$color-w4: #aaaaaa;
+$color-red: #bd0d0d;
+$color-green: #11a512;
+$color-yellow: #edff11;
+$color-highlight: #fffdad;
+
+// ## Dimensions ##
+$layout: 1100px;
+$mobile_width: 992px;
+$mobile_width_md: 768px;
+$mobile_width_sm: 480px;
+$sticky-top: 15px;
+$padding: 15px;
+
+.color-primary {
+  color: $color-w3;
+}
+.background-primary {
+  background-color: $color-w3;
+}

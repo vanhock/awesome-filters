@@ -1,0 +1,108 @@
+$sprites: (
+    'burger': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 25 20'%3e%3cpath d='M25 8.333H0v3.333h25V8.333zM25 0H0v3.333h25V0zM25 16.667H0V20h25v-3.333z' fill='%239D1635'/%3e%3c/svg%3e",
+    'chevron-down': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z'/%3e%3c/svg%3e",
+    'chevron-left': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z'/%3e%3c/svg%3e",
+    'chevron-right': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z'/%3e%3c/svg%3e",
+    'empty': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.8 448.8'%3e%3cpath fill='%23d9ac80' d='M299.2 292.4l-74.8-44 74.8-43.6 74.8-44 74.8 44-74.8 43.6z'/%3e%3cpath fill='%23a67e4f' d='M223.6 248v171.6l148.4-86v-84l-72.8 42.8-74.8-44z'/%3e%3cpath fill='%23d9ac80' d='M149.6 292.4l74.8-44-74.8-43.6-74.8-44-74.8 44 74.8 43.6z'/%3e%3cpath fill='%23643513' d='M224.4 72.8l74.8 44 74.8 44-74.8 44-74.8 43.6-74.8-43.6-74.8-44 74.8-44z'/%3e%3cg fill='%23d9ac80'%3e%3cpath d='M149.6 29.2l74.8 43.6-74.8 44-74.8 44-74.8-44 74.8-44zm149.6 0l-74.8 43.6 74.8 44 74.8 44 74.8-44-74.8-44z'/%3e%3c/g%3e%3cpath fill='%23926e43' d='M223.6 249.2v170.4l-148.8-86v-85.2l74.8 44z'/%3e%3cpath fill='%238d5122' d='M149.6 116.8l-74.8 44 74.8 44 24 14 50.8-29.6V72.8z'/%3e%3cpath fill='%2377411b' d='M224.4 72.8v116.4l50.8 29.6 24-14 74.8-44-74.8-44z'/%3e%3c/svg%3e",
+    'top-arrow': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3e%3cpath d='M255.9 206.7l191.5 191.5c5.3 5.3 12.3 8.2 19.8 8.2s14.5-2.9 19.8-8.2l16.8-16.8c5.3-5.3 8.2-12.3 8.2-19.8s-2.9-14.5-8.2-19.8l-228-228c-5.3-5.3-12.4-8.2-19.9-8.2-7.5 0-14.6 2.9-19.9 8.2L8.2 341.6C2.9 346.9 0 353.9 0 361.4s2.9 14.5 8.2 19.8L25 398c10.9 10.9 28.7 10.9 39.6 0l191.3-191.3z' fill='%23333'/%3e%3c/svg%3e",
+    'x': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z'/%3e%3c/svg%3e",
+    'youtube': "data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 310 310'%3e%3cg%3e%3cpath d='M297.917 64.645c-11.19-13.302-31.85-18.728-71.306-18.728H83.386c-40.359 0-61.369 5.776-72.517 19.938C0 79.663 0 100.008 0 128.166v53.669c0 54.551 12.896 82.248 83.386 82.248h143.226c34.216 0 53.176-4.788 65.442-16.527C304.633 235.518 310 215.863 310 181.835v-53.669c0-29.695-.841-50.16-12.083-63.521zm-98.896 97.765l-65.038 33.991a9.997 9.997 0 01-14.632-8.863v-67.764a10 10 0 0114.609-8.874l65.038 33.772a10 10 0 01.023 17.738z'/%3e%3c/g%3e%3c/svg%3e"
+);
+
+$sizes: (
+    'burger': (
+        'width': 25px,
+        'height': 20px
+    ),
+    'chevron-down': (
+        'width': 20px,
+        'height': 20px
+    ),
+    'chevron-left': (
+        'width': 20px,
+        'height': 20px
+    ),
+    'chevron-right': (
+        'width': 20px,
+        'height': 20px
+    ),
+    'empty': (
+        'width': 448.8px,
+        'height': 448.8px
+    ),
+    'top-arrow': (
+        'width': 512px,
+        'height': 512px
+    ),
+    'x': (
+        'width': 20px,
+        'height': 20px
+    ),
+    'youtube': (
+        'width': 310px,
+        'height': 310px
+    )
+);
+
+$variables: (
+    /* EMPTY */
+);
+
+// https://github.com/waldemarfm/sass-svg-uri/blob/v1.0.0/_svg-uri.scss
+@function sprite-str-replace($string, $search, $replace: '') {
+    $index: str-index($string, $search);
+
+    @if type-of($replace) == 'null' {
+        $replace: '';
+    }
+
+    @if ( $index ) {
+        @return str-slice($string, 1, $index - 1) + $replace + sprite-str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+
+    @return $string;
+}
+
+@function sprite-svg-uri($value) {
+    $encoded: '';
+    $slice: 2000;
+    $index: 0;
+
+    @for $i from 1 through ceil(str-length($value) / $slice) {
+        $chunk: str-slice($value, $index, $index + $slice - 1);
+        $chunk: sprite-str-replace($chunk, '"', "'");
+        $chunk: sprite-str-replace($chunk, '<', '%3C');
+        $chunk: sprite-str-replace($chunk, '>', '%3E');
+        $chunk: sprite-str-replace($chunk, '&', '%26');
+        $chunk: sprite-str-replace($chunk, '#', '%23');
+        $encoded: #{$encoded}#{$chunk};
+        $index: $index + $slice;
+    }
+
+    @return $encoded;
+}
+
+@mixin sprite($name, $user-variables: (), $include-size: false) {
+    $sprite: map-get($sprites, $name);
+
+    // Inject variables
+    $default-variables: map-get($variables, $name);
+    @if type-of($default-variables) == 'map' {
+        @each $key, $value in map-merge($default-variables, $user-variables) {
+            @if ( not map-has-key($default-variables, $key) ) {
+                @warn 'Sprite \'#{$name}\' does not support variable named \'#{$key}\'';
+            }
+
+            $sprite: sprite-str-replace($sprite, '___#{$key}___', sprite-svg-uri(quote(#{$value})));
+        }
+    } @else if type-of($user-variables) == 'map' {
+        @warn 'Sprite \'#{$name}\' does not contain any variables';
+    }
+
+    background: url($sprite) center no-repeat;
+
+    @if $include-size {
+        $size: map-get($sizes, $name);
+        background-size: map-get($size, width) map-get($size, height);
+    }
+}

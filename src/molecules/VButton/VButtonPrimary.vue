@@ -1,0 +1,26 @@
+<template>
+  <v-button
+    class="v-button-primary"
+    @click="$emit('click')"
+    :loading="loading"
+    :theme="appTheme"
+    no-shadow
+    ><slot></slot
+  ></v-button>
+</template>
+
+<script>
+import VButton from "../../atoms/VButton";
+export default {
+  name: "VButtonPrimary",
+  components: { VButton },
+  extends: VButton
+};
+</script>
+
+<style lang="scss" scoped>
+.v-button-primary {
+  background-color: $color-w1;
+  border: 2px solid $color-w1;
+}
+</style>

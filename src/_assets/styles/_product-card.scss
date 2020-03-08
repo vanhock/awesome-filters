@@ -1,0 +1,217 @@
+.product-card {
+  text-align: center;
+  position: relative;
+  padding-bottom: 15px;
+
+  span[data-discount]:before {
+    font-size: 20px;
+  }
+
+  a {
+    display: block;
+    position: relative;
+    img, picture {
+      display: block;
+    }
+    picture {
+      width: 260px;
+      height: 260px;
+      margin: 0 auto;
+      @media (max-width: $mobile_width) {
+        width: 160px;
+        height: 160px;
+      }
+    }
+    img {
+      width: 100%;
+    }
+    &.change-image {
+      picture:not(:first-child) {
+        display: none;
+      }
+    }
+    .product-title {
+      margin: 3px auto 3px;
+      height: 32px;
+      overflow: hidden;
+      font-size: 15px;
+      text-transform: none;
+      max-width: 86%;
+      text-align: center;
+    }
+  }
+  .product-sku {
+    margin-top: 7px;
+    overflow: hidden;
+    height: 13px;
+    font-size: 14px;
+    color: $color-b3;
+  }
+  .product-category {
+    visibility: hidden;
+    margin-top: 13px;
+    padding: 10px;
+    font-size: 14px;
+    color: $color-b3;
+    @media (min-width: 480px) {
+      position: absolute;
+      width: 100%;
+      margin-top: 0;
+      box-sizing: border-box;
+    }
+  }
+  .product-price {
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    .retail {
+      text-decoration: line-through;
+      color: $color-b3;
+      display: inline-block;
+      margin-left: 10px;
+    }
+  }
+  .btn {
+    display: none;
+    position: absolute;
+    @include align();
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 1);
+    margin-top: 40px;
+    padding: 12px 40px;
+    color: $color-b2;
+    &:hover {
+      background-color: $color-b2;
+      color: #fff;
+      border: 1px solid $color-b2;
+    }
+  }
+  &:hover {
+    @media (min-width: 1024px) {
+      a.change-image {
+        picture:first-child {
+          display: none;
+        }
+
+        picture:nth-child(2) {
+          display: block;
+        }
+      }
+      .btn {
+        display: block;
+      }
+      box-shadow: 0 2px 19px rgba(0, 0, 0, 0.15);
+      z-index: 1;
+      .product-category {
+        visibility: visible;
+        background-color: #fff;
+        z-index: 4;
+        box-shadow: 0 15px 19px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+  .btn.quick-view-button {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 14px 0 12px;
+    min-width: 210px;
+    top: 55%;
+    border-radius: 4px;
+    border: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16);
+    cursor: pointer;
+    &:hover {
+      background-color: #fff;
+      color: #000;
+    }
+  }
+  .favorites {
+    position: absolute;
+    display: flex;
+    top: 15px;
+    right: 15px;
+    z-index: 3;
+    width: 30px;
+    padding: 0;
+    height: 28px;
+    vertical-align: top;
+    cursor: pointer;
+    i.fa-heart-o {
+      color: $color-b3;
+    }
+    i.fa-heart {
+      color: $color-b2;
+    }
+    &:not(.active) {
+      i.fa-heart-o {
+        display: block;
+      }
+      i.fa-heart {
+        display: none;
+      }
+      &:hover {
+        i.fa-heart {
+          display: block;
+          opacity: 0.6;
+        }
+        i.fa-heart-o {
+          display: none;
+        }
+      }
+    }
+    &.active {
+      i.fa-heart {
+        display: block;
+      }
+      i.fa-heart-o {
+        display: none;
+      }
+      &:after {
+        visibility: hidden;
+      }
+    }
+    i {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.labels {
+  position: absolute;
+  z-index: 1;
+  top: 18px;
+  left: 0;
+  display: flex;
+
+  & > span {
+    padding: 4px 8px;
+    text-align: center;
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    &.credit,
+    &.inst {
+      background-color: #efff2d;
+      color: #333;
+      text-transform: none;
+    }
+
+    &.inst {
+      background-color: #fef300;
+    }
+
+    &[data-discount] {
+      background-color: rgba(244, 241, 241, 0.5);
+      color: #af1e0e;
+      font-weight: bold;
+      margin-right: -4px;
+
+      &:before {
+        content: "-" attr(data-discount) "%";
+      }
+    }
+  }
+}
