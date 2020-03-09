@@ -1,0 +1,53 @@
+{% assign _filters_use_blocks = 0 %}
+{%- capture _filters_from_blocks -%}
+    {%- for filter in block_lists.filters.blocks -%}
+        {%- if filter.property_group_id != nil -%}
+            {%- for prop in block_lists[filter.property_group_id].blocks -%}
+                {%- if prop.type == "property" -%}
+                    {%- assign property = collection.properties[prop.property_id] -%}
+                    {%- assign property_title = prop.title -%}
+                    {%- assign filter_type = prop.type -%}
+                    {%- capture filter_chars -%}
+                        {%- include "af_json_filters_property" -%}
+                    {%- endcapture -%}
+                    {%- if filter_chars != blank -%}
+                        {id: "property_{{ property.id }}",
+                        value: "{{ property.id }}",
+                        title: "{{ property_title }}",
+                        type: "{{ filter_type }}",
+                        items: [{{- filter_chars | strip | strip_newlines -}}]}{%- unless forloop.last -%},{%- endunless -%}
+                    {%- endif -%}
+                {%- endif -%}
+                {%- if prop.type == "field" or prop.type == "property" -%}
+                    {%- assign _filters_use_blocks = _filters_use_blocks | plus: 1 -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+        {%- if filter._type_price_filter != nil -%}
+            {%- include "af_json_filters_price" with filter -%}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+[
+{%- if _filters_use_blocks > 0 -%}{{ _filters_from_blocks | strip | strip_newlines }},{%- endif -%}
+{%- if _filters_use_blocks == 0 -%}
+    {%- for property in collection.properties -%}
+        {id: "property_{{ property.id }}",
+        value: "{{ property.id }}",
+        title: "{{ property.title }}",
+        type: "property",
+        items: [
+            {%- include "af_json_filters_property" -%}
+        ]},
+    {%- endfor -%}
+    {%- for option in collection.options -%}
+        {id: "property_{{ option.id }}",
+        value: "{{ option.id }}",
+        title: "{{ option.title }}",
+        type: "property",
+        items: [
+        {%- include "af_json_filters_option" -%}
+        ]},
+    {%- endfor -%}
+{%- endif -%}
+]

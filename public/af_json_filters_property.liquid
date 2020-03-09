@@ -1,0 +1,10 @@
+{%- for characteristic in property.characteristics -%}
+{%- if characteristic.products_count > 0 -%}
+{id: "p_{{ property.id }}_c_{{- characteristic.id -}}",
+value: "{{- characteristic.id -}}",
+name: "characteristics[]",
+title: "{{ characteristic.title }}",
+active: {{ characteristic.current? }},
+productsCount: {{- characteristic.products_count -}} },
+{%- endif -%}
+{%- endfor -%}

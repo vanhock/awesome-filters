@@ -1,0 +1,50 @@
+{% assign __block = af_json_filters_price %}
+{% assign maxPrice = collection.products_price_max | round: 0 %}
+{id: "price_filter",
+title: "{{ __block.title | default: 'Фильтр по цене' }}",
+type: "price-filter",
+maxValue: {{ maxPrice }},
+items: [
+  {
+  id: "range_{{ price_min | default: 0}}",
+  value: "{{ price_min | default: 0}}",
+  name: "price_min",
+  type: "range",
+  title: "От",
+  active: {%- if price_min -%}true{%- else -%}false{%- endif -%}
+  },
+  {
+  id: "range_{{ price_max | default: maxPrice}}",
+  value: "{{ price_max | default: maxPrice}}",
+  name: "price_max",
+  type: "range",
+  title: "До",
+  active: {%- if price_max -%}true{%- else -%}false{%- endif -%}
+  }
+  {%- if __block.show_variants_filter and __block.variants_block_id != blank -%},
+  {%- for _price_variant in block_lists[__block.variants_block_id].blocks -%}
+  {%- assign _variant_price_min = _price_variant.price_min | round: 0 -%}
+  {%- assign _variant_price_max = _price_variant.price_max | round: 0 -%}
+  {%- if maxPrice > _variant_price_min and maxPrice >= _variant_price_max -%}
+  {% assign price_max = price_max | plus: 0 %}
+  {% assign price_min = price_min | plus: 0 %}
+  {
+  id: "variant_{{ _price_variant.id }}_{{ _variant_price_min }}",
+  value: "{{ _variant_price_min }}",
+  name: "price_min",
+  type: "variant",
+  title: "{{_price_variant.title}}",
+  active: {%- if price_max != 0 and price_min == _variant_price_min -%}true{%- else -%}false{%- endif -%}
+  },
+  {
+  id: "variant_{{ _price_variant.id }}_{{ _variant_price_max }}",
+  value: "{{ _variant_price_max }}",
+  name: "price_max",
+  type: "variant",
+  title: "{{_price_variant.title}}",
+  active: {%- if price_max == _variant_price_max -%}true{%- else -%}false{%- endif -%}
+  },
+  {%- endif -%}
+  {%- endfor -%}
+  {%- endif -%}
+]},

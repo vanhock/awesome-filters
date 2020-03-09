@@ -1,0 +1,10 @@
+{%- for value in option.values -%}
+    {%- if value.products_count > 0 -%}
+        {id: "o_{{ option.id }}_o_{{- value.id -}}",
+        value: "{{- value.id -}}",
+        name: "options[{{ option.id }}][]",
+        title: "{{ value.title }}",
+        active: {{ value.selected }},
+        productsCount: {{- value.products_count -}} },
+    {%- endif -%}
+{%- endfor -%}
