@@ -1,10 +1,11 @@
 {
   "name": "af-app",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "cors": "cors-server 3005",
+    "pb": "vue-cli-service build && yarn publish",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
