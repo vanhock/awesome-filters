@@ -212,6 +212,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_assets/styles/product-card";
 button,
 input,
 [contenteditable] {
