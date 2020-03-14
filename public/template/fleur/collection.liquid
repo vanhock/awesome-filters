@@ -2,6 +2,14 @@
 <script data-filters>
     {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
     var filters = {{ json_filters | strip | strip_newlines }};
+    function reinitFunctions() {
+        $('[data-show-img]').each(function(){
+          var dataUrl = $(this).attr('data-show-img');
+          var dataTitle = $(this).attr('data-prod-title');
+
+          $(this).append('<img class="transition hide-sm" src="' + dataUrl + '" alt="' + dataTitle + '" />');
+        });
+    }
 </script>
 <div id="app">
     {% if settings.collection_count.size > 0 %}
@@ -71,7 +79,7 @@
                         :filters="filters"
                         :products-total-count="{{ collection.products_count }}"
                         current-collection="{{ collection.title }}"
-                        filters-col-class="col-12" parse-products>
+                        filters-col-class="col-12" @update="reinitFunctions">
                     <template slot="products">
                         <div class="row is-grid flex-center">
                             {% for product in collection.products %}

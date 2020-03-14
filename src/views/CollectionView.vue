@@ -204,6 +204,7 @@ export default {
             ? gotFilters.replace(location.origin, "")
             : `?${params}`;
         await this.$router.push(targetRouteUrl);
+        this.$emit("update");
       }
     }
   }

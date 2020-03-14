@@ -5,6 +5,7 @@
       :current-page="currentPage"
       current-collection="Classic"
       test-url="https://majorica.com.ru/collection/all"
+      @update="onUpdate"
     >
       <template v-slot:collections>
         <div data-v-b17ee3d6="" class="collection-tree__header">
@@ -744,6 +745,11 @@ export default {
     },
     currentPage() {
       return parseInt(getParameterByName("page")) || 1;
+    }
+  },
+  methods: {
+    onUpdate() {
+      console.log("Product list updated!");
     }
   }
 };
