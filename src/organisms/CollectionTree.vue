@@ -75,9 +75,7 @@ export default {
         align-items: center;
       }
       &.active > a {
-        background-color: #161616;
-        color: #f5f5f5;
-        border-radius: 3px;
+        font-weight: bold;
       }
       .products-count {
         margin-left: 10px;
@@ -86,11 +84,6 @@ export default {
       }
       &:not(.root) {
         margin: 10px 0 10px 15px;
-      }
-      @media (min-width: $mobile_width) {
-        &:not(.active) > .collection-tree__list__item {
-          display: none;
-        }
       }
     }
     @media (max-width: $mobile_width) {

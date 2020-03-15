@@ -4,7 +4,7 @@
   var filters = {{ json_filters | strip | strip_newlines }};
   var isSeoFilter = "{{ filter.title }}".length > 0;
 </script>
-<div style="min-height: 700px">
+<div id="app" style="min-height: 700px">
   <div class="container catalog">
     {% if search.performed? %}
       <h1>Поиск: <span>{{search.query}}</span></h1>
@@ -19,112 +19,106 @@
     {% endif %}
   </div>
   <collection-view
-    :property-groups='{%- include "_get_property_groups" | strip | strip_newlines -%}'
     :filters="filters"
     :is-seo-filter="isSeoFilter"
-    :products-total-count="{{ products | size | plus: 0 }}"
+    :products-total-count="{{ collection.products_count }}"
     current-collection="{{ collection.title }}">
+    
     <template slot="collections">
       <div class="collection-tree__header">
-        Коллекции
+        Категории
       </div>
-      <div class="collection-tree__list">
+      <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
         {%- capture _collection-tree -%}
-          {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}unique{%- endcapture -%}
-          {%- cache cache_menu_key -%}
-            {%- for collection in collections.flatten -%}
-              {%- if collection.show? -%}
-                <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}"><a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}<span class="products-count">{{- collection.products_count -}}</span></a></div>
-              {%- endif -%}
-            {%- endfor -%}
-          {%- endcache -%}
+        {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}dd{%- endcapture -%}
+        {%- cache cache_menu_key -%}
+        {%- for collection in collections.flatten -%}
+        {%- if collection.show? -%}
+        <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+          <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}							  	
+            <span class="products-count">{{- collection.products_count -}}</span>
+          </a>
+        </div>
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endcache -%}
         {%- endcapture -%}
         {{- _collection-tree | strip | strip_newlines -}}
-      </div>
+      </div>  
     </template>
     <template slot="products">
+      <div class="row">
       {%- paginate products by 24 -%}
-        {%- for product in products -%}
-          {%- if forloop.index >= 9 -%}{%- assign lazyload = true -%}{%- else -%}{%- assign lazyload = false -%}{%- endif -%}
-          {% assign _category  = product.properties.type.characteristics.first.name | lstrip  %}
-          {% assign _collection = product.properties.line.characteristics.first.name | lstrip  %}
-          {% capture prod_collection %}
-          {{_category}} {{_collection}}
-          {% endcapture %}
-          <div class="product-card col-6 col-md-4 col-xl-3">
-            <div class="labels">
-              {%- capture product-badges -%}
-                {% if product.old_price > product.price and product.price > 0 %}
-                    {% assign _discount = product.old_price | minus: product.price | times: 100 | divided_by: product.old_price | round: 0 %}
-                    {% if _discount > 0 %}
-                        <span data-discount="{{ _discount }}"></span>
-                    {% endif %}
-                {% endif %}
-                {% for label in block_lists.labels.blocks %}
-                {% if forloop.index <= 3 %}
-                {% for item in product.properties.special.characteristics %}
-                {% if label.label_id == item.handle %}
-                <span class="{{item.handle}}">{{ item.title }}</span>
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-                {% endfor %}
-              {%- endcapture -%}
-              {{ product-badges | strip | strip_newlines }}
-            </div>
-            {% assign product_img_size = product.images | size %}
-            {% assign product_img_width = 268 %}
-            <a href="{{ product.url }}?only_available=true" {% if product_img_size > 1 %}class="change-image"{% endif %}>
-              <picture>
-                <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "webp" }}" type="image/webp" />
-                <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
-                <img
-                  class="{{ class }}{% if lazyload %} lazyload{% endif %}"
-                  alt="{{product.title | default: ' '}}"
-                  title="{{ product.title | default: '' }}" />
-              </picture>
-              {%- if product_img_size > 1 -%}
-                {%- assign image_alt = product.title | append: " - 2" -%}
-                <picture>
-                  <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "webp" }}" type="image/webp" />
-                  <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
-                  <img
-                    class="{{ class }}{% if lazyload %} lazyload{% endif %}"
-                    alt="{{ image_alt | default: ' '}}"
-                    title="{{ image_alt | default: '' }}" />
-                </picture>
-              {%- endif -%}
-              <div class="product-title">{{ prod_collection }}</div>
-              <div class="product-sku">
-                  {{product.variants[0].sku}}
-              </div>
-              {%- capture product-price -%}
-                {% assign _price = product.price %}
-                {% if _price == 0 %}
-                  {% for variant in product.variants %}
-                    {% if variant.price > 0 %}
-                      {% assign _price = variant.price %}
-                    {% endif %}
-                  {% endfor %}
-                {% endif %}
-                <div class="product-price">
-                  {% if _price > 0 %}
-                  {{ _price | money }}
-                  {% if product.old_price > 0 %}
-                  <div class="retail">{{ product.old_price | money }}</div>
-                  {% endif %}
-                  {% else %}
-                  Цена уточняется
-                  {% endif %}
-                </div>
-              {%- endcapture -%}
-              {{- product-price | strip | strip_newlines -}}
-            </a>
+      {%- for product in products -%}
+      {%- if forloop.index >= 9 -%}{%- assign lazyload = true -%}{%- else -%}{%- assign lazyload = false -%}{%- endif -%}
+      
+      <div class="product-card col-6 col-md-4 col-xl-3">
+        <div class="labels">
+          {%- capture product-badges -%}
+          {% if product.old_price > product.price and product.price > 0 %}
+          {% assign _discount = product.old_price | minus: product.price | times: 100 | divided_by: product.old_price | round: 0 %}
+          {% if _discount > 0 %}
+          <span data-discount="{{ _discount }}"></span>
+          {% endif %}
+          {% endif %}
+          {% for item in product.properties.special.characteristics %}
+          {% if label.label_id == item.handle %}
+          <span class="{{item.handle}}">{{ item.title }}</span>
+          {% endif %}
+          {% endfor %}
+          {%- endcapture -%}
+          {{ product-badges | strip | strip_newlines }}
+        </div>
+        {% assign product_img_size = product.images | size %}
+        {% assign product_img_width = 268 %}
+        <a href="{{ product.url }}" {% if product_img_size > 1 %}class="change-image"{% endif %}>
+          <picture>
+            <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "webp" }}" type="image/webp" />
+            <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
+            <img
+                 class="{% if lazyload %} lazyload{% endif %}"
+                 alt="{{product.title | default: ' '}}"
+                 title="{{ product.title | default: '' }}" />
+          </picture>
+          {%- if product_img_size > 1 -%}
+          {%- assign image_alt = product.title | append: " - 2" -%}
+          <picture>
+            <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "webp" }}" type="image/webp" />
+            <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
+            <img
+                 class="{% if lazyload %} lazyload{% endif %}"
+                 alt="{{ image_alt | default: ' '}}"
+                 title="{{ image_alt | default: '' }}" />
+          </picture>
+          {%- endif -%}
+          <div class="product-title">{{ product.title }}</div>
+          {%- capture product-price -%}
+          {% assign _price = product.price %}
+          {% if _price == 0 %}
+          {% for variant in product.variants %}
+          {% if variant.price > 0 %}
+          {% assign _price = variant.price %}
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          <div class="product-price">
+            {% if _price > 0 %}
+            {{ _price | money }}
+            {% if product.old_price > 0 %}
+            <div class="retail">{{ product.old_price | money }}</div>
+            {% endif %}
+            {% else %}
+            Цена уточняется
+            {% endif %}
           </div>
-
-        {%- endfor -%}
+          {%- endcapture -%}
+          {{- product-price | strip | strip_newlines -}}
+        </a>
+      </div>
+      {%- endfor -%}
       {%- endpaginate -%}
+      </div>
     </template>
   </collection-view>
 </div>
-
+<script src="https://unpkg.com/lazysizes/lazysizes.min.js" defer></script>

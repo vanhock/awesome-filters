@@ -12,8 +12,8 @@
         <div data-v-b17ee3d6="" class="collection-tree__header">
           Категории
         </div>
-        <div data-v-b17ee3d6="" class="collection-tree__list active">
-          <div data-v-b17ee3d6="" class="collection-tree__list__item root has_child active">
+        <div data-v-b17ee3d6="" class="collection-tree__list"> <!-- class: active -->
+          <div data-v-b17ee3d6="" class="collection-tree__list__item root has_child"> <!-- class: active -->
             <a
               data-v-b17ee3d6=""
               href="/collection/classic"
@@ -23,7 +23,7 @@
                 >74</span
               ></a
             >
-            <div data-v-b17ee3d6="" class="collection-tree__list__item">
+            <div data-v-b17ee3d6="" class="collection-tree__list__item active">
               <a
                 href="/collection/esfera"
                 class="collection-title"

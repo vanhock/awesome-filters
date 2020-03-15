@@ -2,6 +2,7 @@
 <script data-filters>
     {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
     var filters = {{ json_filters | strip | strip_newlines }};
+    var isSeoFilter = "{{ filter.title }}".length > 0;
     function reinitFunctions() {
         $('[data-show-img]').each(function(){
           var dataUrl = $(this).attr('data-show-img');
@@ -11,6 +12,13 @@
         });
     }
 </script>
+<style>
+  @media (min-width: 992px) {
+    .hide-collections {
+      display: none
+    }
+  }
+</style>
 <div id="app">
     {% if settings.collection_count.size > 0 %}
         {% assign collection_count = settings.collection_count %}
@@ -77,9 +85,34 @@
             <div class="row">
                 <collection-view
                         :filters="filters"
+                        :is-seo-filter="isSeoFilter"
                         :products-total-count="{{ collection.products_count }}"
                         current-collection="{{ collection.title }}"
-                        filters-col-class="col-12" @update="reinitFunctions">
+                        filters-col-class="col-12" 
+                        collections-col-class="col-12 hide-collections"
+                        @update="reinitFunctions">
+                  	<template slot="collections">
+                      <div class="collection-tree__header">
+                        Категории
+                      </div>
+                      <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
+                        {%- capture _collection-tree -%}
+                        {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}{%- endcapture -%}
+                        {%- cache cache_menu_key -%}
+                          {%- for collection in collections.flatten -%}
+                            {%- if collection.show? -%}
+                              <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+                                <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}							  	
+                                  <span class="products-count">{{- collection.products_count -}}</span>
+                                </a>
+                              </div>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endcache -%}
+                        {%- endcapture -%}
+                        {{- _collection-tree | strip | strip_newlines -}}
+                      </div>  
+                  	</template>
                     <template slot="products">
                         <div class="row is-grid flex-center">
                             {% for product in collection.products %}
