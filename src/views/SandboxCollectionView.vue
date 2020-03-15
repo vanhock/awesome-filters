@@ -1,6 +1,7 @@
 <template>
   <div class="sandbox-collection-view">
     <collection-view
+      :filters="filters"
       :products-total-count="53"
       :current-page="currentPage"
       current-collection="Classic"
@@ -11,8 +12,8 @@
         <div data-v-b17ee3d6="" class="collection-tree__header">
           Категории
         </div>
-        <div data-v-b17ee3d6="" class="collection-tree__list">
-          <div data-v-b17ee3d6="" class="collection-tree__list__item root">
+        <div data-v-b17ee3d6="" class="collection-tree__list active">
+          <div data-v-b17ee3d6="" class="collection-tree__list__item root has_child active">
             <a
               data-v-b17ee3d6=""
               href="/collection/classic"
@@ -22,6 +23,50 @@
                 >74</span
               ></a
             >
+            <div data-v-b17ee3d6="" class="collection-tree__list__item">
+              <a
+                href="/collection/esfera"
+                class="collection-title"
+              >
+                Esfera<span data-v-b17ee3d6="" class="products-count">2</span></a
+              >
+            </div>
+            <div data-v-b17ee3d6="" class="collection-tree__list__item">
+              <a
+                href="/collection/infinite"
+                class="collection-title"
+              >
+                Infinite<span data-v-b17ee3d6="" class="products-count"
+                  >2</span
+                ></a
+              >
+            </div>
+            <div data-v-b17ee3d6="" class="collection-tree__list__item">
+              <a
+                href="/collection/isla"
+                class="collection-title"
+              >
+                Isla<span data-v-b17ee3d6="" class="products-count">51</span></a
+              >
+            </div>
+            <div data-v-b17ee3d6="" class="collection-tree__list__item">
+              <a
+                href="/collection/tu-y-yo"
+                class="collection-title"
+              >
+                Tu Y Yo<span data-v-b17ee3d6="" class="products-count"
+                  >34</span
+                ></a
+              >
+            </div>
+            <div data-v-b17ee3d6="" class="collection-tree__list__item">
+              <a
+                href="/collection/alicia"
+                class="collection-title"
+              >
+                Alicia<span data-v-b17ee3d6="" class="products-count">2</span></a
+              >
+            </div>
           </div>
           <div data-v-b17ee3d6="" class="collection-tree__list__item root">
             <a
@@ -45,7 +90,7 @@
           </div>
           <div
             data-v-b17ee3d6=""
-            class="collection-tree__list__item active root"
+            class="collection-tree__list__item root"
           >
             <a
               data-v-b17ee3d6=""

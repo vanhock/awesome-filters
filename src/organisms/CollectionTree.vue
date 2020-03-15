@@ -74,7 +74,7 @@ export default {
         padding: 3px 7px;
         align-items: center;
       }
-      &.active a {
+      &.active > a {
         background-color: #161616;
         color: #f5f5f5;
         border-radius: 3px;
@@ -84,15 +84,40 @@ export default {
         color: $color-b3;
         font-size: 11px;
       }
-      @media (max-width: $mobile_width) {
+      &:not(.root) {
+        margin: 10px 0 10px 15px;
+      }
+      @media (min-width: $mobile_width) {
+        &:not(.active) > .collection-tree__list__item {
+          display: none;
+        }
+      }
+    }
+    @media (max-width: $mobile_width) {
+      &.active {
+        .collection-tree__list__item {
+          &.root:not(.has_child) {
+            display: none;
+          }
+          &.root > a {
+            display: none;
+          }
+        }
+      }
+      &:not(.active) {
+        .root > .collection-tree__list__item {
+          display: none;
+        }
+      }
+      &__item {
         font-size: 16px;
         line-height: 18px;
-        &:not(:last-child) {
+        &:not(:last-child):not(.active) {
           margin-bottom: 8px;
           padding-bottom: 8px;
           border-bottom: 1px solid $color-b41;
         }
-        &.active a {
+        &.active > a {
           background-color: transparent;
           font-weight: bold;
           color: $color-b1;

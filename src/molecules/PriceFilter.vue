@@ -174,6 +174,7 @@ export default {
 <style lang="scss" scoped>
 .filter {
   &__footer {
+    margin-top: 25px;
     @media (max-width: $mobile_width) {
       display: none;
     }
