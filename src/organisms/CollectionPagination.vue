@@ -8,16 +8,17 @@
       <v-icon icon="chevron-left" :params="iconParams" />
       <span>Назад</span>
     </div>
-    <div
-      class="collection-pagination__item"
-      v-for="(page, index) in paginationPages"
-      :key="index"
-      v-if="showPage(page)"
-      :class="{ active: paginationCurrentPage === page }"
-      @click="$emit('change', page)"
-    >
-      {{ page }}
-    </div>
+    <template v-for="(page, index) in paginationPages">
+      <div
+        class="collection-pagination__item"
+        :key="index"
+        v-if="showPage(page)"
+        :class="{ active: paginationCurrentPage === page }"
+        @click="$emit('change', page)"
+      >
+        {{ page }}
+      </div>
+    </template>
     <div
       class="collection-pagination__item"
       :class="{ active: paginationCurrentPage === paginationPages }"
@@ -60,6 +61,17 @@ export default {
   display: flex;
   margin-top: 15px;
   margin-bottom: 15px;
+
+  button,
+  input,
+  [contenteditable] {
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+  }
+
   &__item {
     display: flex;
     justify-content: center;

@@ -2,8 +2,6 @@ import Vue from "vue";
 import router from "./_router";
 import store from "./_store";
 import CollectionView from "./views/CollectionView";
-Vue.config.productionTip = false;
-
 if (process.env.NODE_ENV === "production") {
   new Vue({
     store,

@@ -801,6 +801,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../_assets/styles/normalize";
 @import "../_assets/styles/sandbox";
 @import "../_assets/styles/product-card";
 </style>

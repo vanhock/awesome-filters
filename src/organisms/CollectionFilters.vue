@@ -316,6 +316,8 @@ export default {
   z-index: 12;
   background-color: #fff;
   padding-bottom: 20px;
+  font-size: 12px;
+
   @media (min-width: $mobile_width) {
     position: sticky;
     top: $sticky-top;
@@ -373,7 +375,6 @@ export default {
     }
   }
   &__list {
-    display: block;
     @media (max-width: $mobile_width) {
       flex-direction: column;
       justify-content: flex-start;
@@ -381,6 +382,7 @@ export default {
       max-height: calc(100% - 100px);
     }
     @media (min-width: $mobile_width) {
+      display: inline-block;
       margin: -5px;
     }
     &.selected {
@@ -389,7 +391,7 @@ export default {
       }
     }
   }
-  &__footer-mobile {
+  &__footer-mobile.mobile-bar {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -576,6 +578,7 @@ export default {
   }
 }
 .clear-all-filters {
+  display: inline-block;
   @media (max-width: $mobile_width) {
     display: none;
   }

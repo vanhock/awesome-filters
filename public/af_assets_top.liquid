@@ -1,14 +1,11 @@
 {%- if template != "collection" -%}
 <link href={{ "af_chunk-vendors.js" | asset_url }} rel=prefetch as=script>
 <link href={{ "af_app.js" | asset_url }} rel=prefetch as=script>
-<link href={{ "af_chunk-vendors.css" | asset_url }} rel=prefetch as=style>
 <link href={{ "af_app.css" | asset_url }} rel=prefetch as=style>
 {%- endif -%}
 {%- if template == "collection" -%}
 <link href={{ "af_chunk-vendors.js" | asset_url }} rel=preload as=script>
 <link href={{ "af_app.js" | asset_url }} rel=preload as=script>
-<link href={{ "af_chunk-vendors.css" | asset_url }} rel=preload as=style>
 <link href={{ "af_app.css" | asset_url }} rel=preload as=style>
-<link href={{ "af_chunk-vendors.css" | asset_url }} rel=stylesheet>
 <link href={{ "af_app.css" | asset_url }} rel=stylesheet>
 {%- endif -%}

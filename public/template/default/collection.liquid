@@ -52,7 +52,7 @@
       {%- for product in products -%}
       {%- if forloop.index >= 9 -%}{%- assign lazyload = true -%}{%- else -%}{%- assign lazyload = false -%}{%- endif -%}
       
-      <div class="product-card col-6 col-md-4 col-xl-3">
+      <div class="product-card col-6 col-md-4 col-xl-3" data-af-product-card>
         <div class="labels">
           {%- capture product-badges -%}
           {% if product.old_price > product.price and product.price > 0 %}

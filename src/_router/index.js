@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/SandboxCollectionView.vue";
 
 Vue.use(VueRouter);
 let routes;
@@ -9,7 +8,7 @@ if (process.env.NODE_ENV !== "production") {
     {
       path: "/",
       name: "Home",
-      component: Home
+      component: () => import(/* webpackChunkName: "SandboxCollectionView" */ "../views/SandboxCollectionView.vue"),
     }
   ];
 }
