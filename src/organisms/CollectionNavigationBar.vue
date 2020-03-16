@@ -81,7 +81,9 @@ export default {
 
 <style lang="scss" scoped>
 .collection-navigation-bar {
-  margin-bottom: 25px;
+  & + * {
+    margin-top: 25px;
+  }
   .title {
     span {
       color: $color-b3;
