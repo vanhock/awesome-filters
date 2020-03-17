@@ -1,4 +1,4 @@
-{% comment %}<!-- Планнер - collection template for Awesome Filters -->{% endcomment %}
+{% comment %}<!-- Фантазия 2.0 collection template for Awesome Filters -->{% endcomment %}
 <script data-filters>
     {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
     var filters = {{ json_filters | strip | strip_newlines }};
@@ -44,6 +44,8 @@
                     :filters="filters"
                     :is-seo-filter="isSeoFilter"
                     :products-total-count="{{ collection.products_count }}"
+                    :page-size="12"
+                    scrolling-element=".page-wrapper"
                     current-collection="{{ collection.title }}"
                     filters-col-class="collection-inner cell-sm-12 cell-xl-10"
                     collections-col-class="collection-aside cell-sm-12 cell-xl-2">

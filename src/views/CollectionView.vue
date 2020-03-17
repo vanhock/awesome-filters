@@ -44,8 +44,7 @@ import {
   COLLECTIONS_SET_FILTERS,
   COLLECTIONS_SET_INTERFACE_SETTINGS,
   COLLECTIONS_SET_PAGINATION,
-  COLLECTIONS_SET_PRODUCTS,
-  COLLECTIONS_SET_SORTING
+  COLLECTIONS_SET_PRODUCTS
 } from "../_store/mutation-types";
 import { mapGetters } from "vuex";
 import CollectionPagination from "../organisms/CollectionPagination";
@@ -62,7 +61,7 @@ export default {
   created() {
     /** Set starting data of page  **/
     const currentPage = getParameterByName("page") || 1;
-    const pageSize =  getParameterByName("page_size") || this.pageSize;
+    const pageSize = getParameterByName("page_size") || this.pageSize;
     if (currentPage) {
       this.$store.commit(COLLECTIONS_SET_PAGINATION, {
         currentPage: parseInt(currentPage),
@@ -134,7 +133,8 @@ export default {
       default: true
     } /** In this mode, products will get from HTML instead of API **/,
     hideCollectionsMenu: Boolean,
-    isSeoFilter: Boolean
+    isSeoFilter: Boolean,
+    scrollingElement: String
   },
   computed: {
     ...mapGetters([
@@ -151,16 +151,21 @@ export default {
   methods: {
     async getFiltersAndProducts(
       source,
-      page = parseInt(getParameterByName("page") || "1")
+      page = parseInt(getParameterByName("page") || "1"),
+      activeFiltersString = this.activeFiltersString
     ) {
       if (!source && !this.changedFilters.length) {
         return;
       }
-      window.scrollTo(0, 0);
+      const scrollingElement =
+        (this.scrollingElement &&
+          document.querySelector(this.scrollingElement)) ||
+        window;
+      scrollingElement.scrollTo(0, 0);
       let filtersUrl = "";
       let productsUrl = "";
       let searchQuery = getParameterByName("q");
-      let params = this.activeFiltersString;
+      let params = activeFiltersString;
       params = params.length
         ? `${params}&page=${page}&page_size=${this.paginationPageSize}`
         : `page=${page}&page_size=${this.paginationPageSize}`;

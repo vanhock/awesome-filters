@@ -579,6 +579,8 @@ export default {
 }
 .clear-all-filters {
   display: inline-block;
+  box-sizing: border-box;
+  height: 32px;
   @media (max-width: $mobile_width) {
     display: none;
   }

@@ -155,9 +155,9 @@ export default {
       state.hideProductsSlot = true;
     },
     [COLLECTIONS_SET_PAGINATION](state, { currentPage, total, pageSize }) {
-      state.paginationCurrentPage = currentPage || 1;
-      state.productsTotalCount = total || 0;
-      state.paginationPageSize = pageSize || 24;
+      if (currentPage) state.paginationCurrentPage = currentPage || 1;
+      if (total) state.productsTotalCount = total || 0;
+      if (pageSize) state.paginationPageSize = pageSize;
     },
     [COLLECTIONS_SET_SELECTED_FILTER](state, payload) {
       state.selectedFilterId = payload || "";
@@ -168,7 +168,12 @@ export default {
       }
       const tempFilters = [...state.filters];
       tempFilters.some((f, i) => {
-        if (!!f && Object.keys(f).length && f.hasOwnProperty("items") && f.id === filter.id) {
+        if (
+          !!f &&
+          Object.keys(f).length &&
+          f.hasOwnProperty("items") &&
+          f.id === filter.id
+        ) {
           return f.items.some((item, index) => {
             /** If passed one filter item as object **/
             if (filter.item) {
