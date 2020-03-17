@@ -80,6 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../_assets/styles/base";
 .collection-navigation-bar {
   & + * {
     margin-top: 25px;

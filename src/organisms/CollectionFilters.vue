@@ -1,10 +1,10 @@
 <template>
   <div
-    class="collection-filters"
-    ref="collection-filters"
+    class="af-collection-filters"
+    ref="af-collection-filters"
     :class="{ show: mobileFilterShow }"
   >
-    <div class="collection-filters__header-mobile mobile-bar">
+    <div class="af-collection-filters__header-mobile mobile-bar">
       <span class="title">Фильтры</span>
       <v-icon
         v-if="!selectedFilter"
@@ -17,12 +17,12 @@
       />
     </div>
     <div
-      class="collection-filters__list"
+      class="af-collection-filters__list"
       :class="{ selected: selectedFilter }"
       v-if="filters && filters.length"
     >
       <div
-        class="filter-item"
+        class="af-filter-item"
         :class="[
           `type-${filter.type}`,
           { active: isActive(filter.id) },
@@ -31,7 +31,7 @@
         v-for="(filter, index) in filters"
         :key="index"
       >
-        <div class="filter-item__title">
+        <div class="af-filter-item__title">
           <div class="title-text" @click="setSelected(filter.id)">
             <div class="title--desktop">{{ getActiveFilterTitle(filter) }}</div>
             <div
@@ -64,7 +64,7 @@
           </template>
         </div>
         <div
-          class="filter-item__content"
+          class="af-filter-item__content"
           v-if="selectedFilter && selectedFilter.id === filter.id"
         >
           <div class="mobile-bar">
@@ -109,7 +109,7 @@
               >Применить</v-button-outline
             >
           </price-filter>
-          <div class="collection-filters__footer-mobile mobile-bar">
+          <div class="af-collection-filters__footer-mobile mobile-bar">
             <v-button-outline
               :disabled="!isActive(filter.id)"
               @click="clearFilter(filter.id)"
@@ -130,7 +130,7 @@
       @click="clearAllFilters"
       >Очистить фильтры</v-button-inline
     >
-    <div class="collection-filters__footer-mobile mobile-bar">
+    <div class="af-collection-filters__footer-mobile mobile-bar">
       <v-button-outline
         :disabled="!activeFilters || Object.keys(activeFilters).length < 1"
         @click="clearAllFilters"
@@ -143,7 +143,7 @@
       >
     </div>
     <div
-      class="collection-filters__overlay"
+      class="af-collection-filters__overlay"
       v-show="selectedFilter"
       @click="applyAndCloseFilter"
     ></div>
@@ -311,7 +311,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.collection-filters {
+.af-collection-filters {
   position: relative;
   z-index: 12;
   background-color: #fff;
@@ -386,7 +386,7 @@ export default {
       margin: -5px;
     }
     &.selected {
-      .filter-item:not(.selected) .filter-item__title {
+      .af-filter-item:not(.selected) .filter-item__title {
         opacity: 0.7;
       }
     }
@@ -410,7 +410,7 @@ export default {
       display: none;
     }
   }
-  .filter-item {
+  .af-filter-item {
     margin: 5px;
     position: relative;
     @media (max-width: $mobile_width) {
@@ -506,7 +506,7 @@ export default {
       }
     }
     @media (max-width: $mobile_width) {
-      &:not(:last-child) .filter-item__title {
+      &:not(:last-child) .af-filter-item__title {
         border-bottom: 1px solid $color-b4;
       }
     }
@@ -545,14 +545,14 @@ export default {
         }
       }
     }
-    &.active .filter-item__title {
+    &.active .af-filter-item__title {
       @media (min-width: $mobile_width) {
         background-color: $color-b2;
         color: #fff;
       }
     }
     &.selected {
-      .filter-item__title {
+      .af-filter-item__title {
         z-index: 3;
       }
     }
@@ -587,7 +587,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.filter-item.active .filter-item__title {
+.af-filter-item.active .af-filter-item__title {
   .v-icon .v-icon-image {
     background-color: #fff;
   }

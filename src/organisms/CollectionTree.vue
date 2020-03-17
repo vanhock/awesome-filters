@@ -29,6 +29,8 @@ export default {
 .collection-tree {
   position: sticky;
   top: $sticky-top;
+
+  @import "../_assets/styles/base";
   @media (max-width: $mobile_width) {
     display: none;
     &.show {

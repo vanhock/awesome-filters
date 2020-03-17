@@ -796,6 +796,7 @@ export default {
 
 <style lang="scss">
 @import "../_assets/styles/normalize";
+@import "../_assets/styles/grid.min";
 @import "../_assets/styles/sandbox";
 @import "../_assets/styles/product-card";
 </style>

@@ -9,7 +9,7 @@ id: "sorting_popularity",
 value: "popularity",
 name: "order",
 title: "По популярности",
-active: {% if order == "popularity" %}true{% else %}false{% endif %}
+active: {% if order == "popularity" or order == nil %}true{% else %}false{% endif %}
 },
 {
 id: "sorting_price",

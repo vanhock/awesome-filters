@@ -1,0 +1,117 @@
+{% comment %}<!-- Стиль - collection template for Awesome Filters -->{% endcomment %}
+<script data-filters>
+    {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
+    var filters = {{ json_filters | strip | strip_newlines }};
+    var isSeoFilter = "{{ filter.title }}".length > 0;
+</script>
+<style>
+    [data-af-filters-view] {
+        margin: 0 -10px;
+    }
+    @media (min-width: 992px) {
+        .hide-collections {
+            display: none
+        }
+    }
+</style>
+{% include 'breadcrumb' %}
+{% include "page_header" %}
+{%- paginate products by 12 -%}
+    <div id="app" style="min-height: 700px">
+
+        <collection-view
+                :filters="filters"
+                :is-seo-filter="isSeoFilter"
+                :products-total-count="{{ collection.products_count }}"
+                :page-size="12"
+                scrolling-element=".page-wrapper"
+                current-collection="{{ collection.title }}"
+                filters-col-class="collection-inner cell-sm-12"
+                collections-col-class="coll-12 hide-collections">
+            <template slot="before-filters">
+                {% if settings.category_description_position == 'before_products'  and current_page == null %}
+                    <div class="collection-mix-description">
+                        {% unless  settings.category_image_hidden == '1' or filter.description %}
+                            {% unless collection.image.original_url contains 'no_image' %}
+                                <div class="collection-image image-container">
+                                    <img src="{{ collection.image.original_url }}" alt="{{ collection.title }}" title="{{ collection.title }}"/>
+                                </div>
+                            {% endunless %}
+                        {% endunless %}
+                        {% if filter.description %}
+                            <div class="collection-description at-top editor">
+                                {{ filter.description | editable }}
+                            </div>
+                            {% elsif collection.description %}
+                            <div class="collection-description at-top editor">
+                                {{ collection.description | editable }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {% if collection.show_subcollections? and settings.category_subcollections_hidden != '1'%}
+                    {% include "collection_subcollections", source_handle: collection.handle %}
+                {% endif %}
+            </template>
+            <template slot="collections">
+                <div class="collection-tree__header">
+                    Категории
+                </div>
+                <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
+                    {%- capture _collection-tree -%}
+                        {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}dd{%- endcapture -%}
+                        {%- cache cache_menu_key -%}
+                            {%- for collection in collections.flatten -%}
+                                {%- if collection.show? -%}
+                                    <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+                                        <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}
+                                            <span class="products-count">{{- collection.products_count -}}</span>
+                                        </a>
+                                    </div>
+                                {%- endif -%}
+                            {%- endfor -%}
+                        {%- endcache -%}
+                    {%- endcapture -%}
+                    {{- _collection-tree | strip | strip_newlines -}}
+                </div>
+            </template>
+            <template slot="products">
+                {% include "collection_products" %}
+            </template>
+        </collection-view>
+        {% if settings.category_description_position == 'after_products'  and current_page == null %}
+            <div class="collection-mix-description">
+                {% unless  settings.category_image_hidden == '1' or filter.description %}
+                    {% unless collection.image.original_url contains 'no_image' %}
+                        <div class="collection-image image-container">
+                            <img src="{{ collection.image.original_url }}" alt="{{ collection.title }}" title="{{ collection.title }}"/>
+                        </div>
+                    {% endunless %}
+                {% endunless %}
+                {% if filter.description %}
+                    <div class="collection-description at-bottom editor">
+                        {{ filter.description | editable }}
+                    </div>
+                    {% elsif collection.description %}
+                    <div class="collection-description at-bottom editor">
+                        {{ collection.description | editable }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if current_page == null %}
+            {% if filter.seo_description %}
+                <div class="collection-description is-seo editor">
+                    {{ filter.seo_description | editable }}
+                </div>
+
+                {% elsif collection.seo_description %}
+                <div class="collection-description is-seo editor">
+                    {{ collection.seo_description | editable }}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+{%- endpaginate -%}
