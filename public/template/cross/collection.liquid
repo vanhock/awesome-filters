@@ -4,36 +4,43 @@
     var filters = {{ json_filters | strip | strip_newlines }};
     var isSeoFilter = "{{ filter.title }}".length > 0;
     function reinitFunctions() {
-        $('[data-show-img]').each(function(){
-          var dataUrl = $(this).attr('data-show-img');
-          var dataTitle = $(this).attr('data-prod-title');
+      $('[data-show-img]').each(function(){
+        var dataUrl = $(this).attr('data-show-img');
+        var dataTitle = $(this).attr('data-prod-title');
 
-          $(this).append('<img class="transition hide-sm" src="' + dataUrl + '" alt="' + dataTitle + '" />');
-        });
-      	var products = document.querySelectorAll("[data-product-id]");
-      	if(products) {
-          products.forEach(p => {
-            Products.initInstance($(p));
-          })
-        }
+        $(this).append('<img class="transition hide-sm" src="' + dataUrl + '" alt="' + dataTitle + '" />');
+      });
+      var products = document.querySelectorAll("[data-product-id]");
+      if(products) {
+        products.forEach(p => {
+          Products.initInstance($(p));
+        })
+      }
     }
 </script>
 <style>
-  .collection-view {
-    padding: 0;
-    margin: 0 -15px;
-  }
-  @media (max-width: 992px) {
-    .template-title {
-      display: none;
+    .collection-view {
+        padding: 0;
     }
-  }
+    @media (min-width: 992px) {
+        .hide-collections {
+            display: none;
+        }
+        [data-af-filters-view] .clear-all-filters {
+            margin-top: -4px;
+        }
+    }
+    @media (max-width: 992px) {
+        .template-title {
+            display: none;
+        }
+    }
 </style>
 <div id="app">
     {% if settings.collection_count.size > 0 %}
-      {% assign collection_count = settings.collection_count %}
+        {% assign collection_count = settings.collection_count %}
     {% else %}
-      {% assign collection_count = 12 %}
+        {% assign collection_count = 12 %}
     {% endif %}
 
     {% assign collection_on = false %}
@@ -42,45 +49,45 @@
     {% assign collection_image_on = false %}
 
     {% if settings.collection_filter_on == '1' or settings.collection_filter_on == 'on' %}
-      {% assign collection_on = true %}
+        {% assign collection_on = true %}
     {% endif %}
 
     {% if settings.collection_sort_on == '1' or settings.collection_sort_on == 'on' %}
-      {% assign sort_on = true %}
+        {% assign sort_on = true %}
     {% endif %}
 
     {% if settings.collection_page_size_on == '1' or settings.collection_page_size_on == 'on' %}
-      {% assign page_size_on = true %}
+        {% assign page_size_on = true %}
     {% endif %}
 
     {% if collection.current_characteristics.size > 0 or price_min or price_max or collection.current_option_values.size > 0 %}
-      {% assign filter_selected = true %}
+        {% assign filter_selected = true %}
     {% endif %}
 
     {% if settings.collection_collection_image_on == '1' or settings.collection_collection_image_on == 'on' %}
-      {% unless collection.image.original_url contains 'no_image' or filter.title.size > 0 %}
+        {% unless collection.image.original_url contains 'no_image' or filter.title.size > 0 %}
         {% assign collection_image_on = true %}
-        {% capture collection_image_classes %}class="relative collection-preview-big m-b-50" style="background-image: url({{ collection.image | image_url: 1500 }});"{% endcapture %}
-      {% endunless %}
+            {% capture collection_image_classes %}class="relative collection-preview-big m-b-50" style="background-image: url({{ collection.image | image_url: 1500 }});"{% endcapture %}
+        {% endunless %}
     {% endif %}
-	{% paginate products by collection_count %}
+    {% paginate products by collection_count %}
     <div class="collection-products m-b-50">
         <div class="container">
-			<div class="template-title">{% include 'template-title' %}</div>
+            <div class="template-title">{% include 'template-title' %}</div>
 
             {% assign current_page_num = current_page | times: 1 %}
             {% unless current_page_num > 1 %}
-              {% if settings.collection_short_description_place == 'before' %}
-                {% if settings.collection_short_description_on == '1' or settings.collection_short_description_on == 'on' %}
-                  {% include 'collection-description' with 'short' %}
+                {% if settings.collection_short_description_place == 'before' %}
+                    {% if settings.collection_short_description_on == '1' or settings.collection_short_description_on == 'on' %}
+                        {% include 'collection-description' with 'short' %}
+                    {% endif %}
                 {% endif %}
-              {% endif %}
 
-              {% if settings.collection_description_place == 'before' %}
-                {% if settings.collection_description_on == '1' or settings.collection_description_on == 'on' %}
-                  {% include 'collection-description' with 'full' %}
+                {% if settings.collection_description_place == 'before' %}
+                    {% if settings.collection_description_on == '1' or settings.collection_description_on == 'on' %}
+                        {% include 'collection-description' with 'full' %}
+                    {% endif %}
                 {% endif %}
-              {% endif %}
             {% endunless %}
             <div class="pallette_1">
                 <collection-view
@@ -88,29 +95,31 @@
                         :is-seo-filter="isSeoFilter"
                         :products-total-count="{{ collection.products_count }}"
                         current-collection="{{ collection.title }}"
+                        filters-col-class="cell-12 cell-12-sm"
+                        collections-col-class="hide-collections"
                         @update="reinitFunctions">
-                  	<template slot="collections">
-                      <div class="collection-tree__header">
-                        Категории
-                      </div>
-                      <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
-                        {%- capture _collection-tree -%}
-                        {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}{%- endcapture -%}
-                        {%- cache cache_menu_key -%}
-                          {%- for collection in collections.flatten -%}
-                            {%- if collection.show? -%}
-                              <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
-                                <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}							  	
-                                  <span class="products-count">{{- collection.products_count -}}</span>
-                                </a>
-                              </div>
-                            {%- endif -%}
-                          {%- endfor -%}
-                        {%- endcache -%}
-                        {%- endcapture -%}
-                        {{- _collection-tree | strip | strip_newlines -}}
-                      </div>  
-                  	</template>
+                    <template slot="collections">
+                        <div class="collection-tree__header">
+                            Категории
+                        </div>
+                        <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
+                            {%- capture _collection-tree -%}
+                                {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}{%- endcapture -%}
+                                {%- cache cache_menu_key -%}
+                                    {%- for collection in collections.flatten -%}
+                                        {%- if collection.show? -%}
+                                            <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+                                                <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}
+                                                    <span class="products-count">{{- collection.products_count -}}</span>
+                                                </a>
+                                            </div>
+                                        {%- endif -%}
+                                    {%- endfor -%}
+                                {%- endcache -%}
+                            {%- endcapture -%}
+                            {{- _collection-tree | strip | strip_newlines -}}
+                        </div>
+                    </template>
                     <template slot="products">
                         <div class="row is-grid flex-center" style="font-size: 14px;">
                             {% for product in collection.products %}

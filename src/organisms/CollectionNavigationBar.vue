@@ -82,6 +82,7 @@ export default {
 <style lang="scss" scoped>
 @import "../_assets/styles/base";
 .collection-navigation-bar {
+  width: 100%;
   & + * {
     margin-top: 25px;
   }

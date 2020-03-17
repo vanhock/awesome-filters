@@ -345,7 +345,7 @@ export default {
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 12;
+    z-index: 1002;
     &.show {
       display: block;
     }

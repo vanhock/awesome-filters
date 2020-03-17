@@ -8,6 +8,18 @@
     .sidebar-block {
         display: none;
     }
+    .decorated-title {
+        margin-top: -11px;
+    }
+    [data-af-filters-view] .collection-tree__header {
+        border-bottom: 2px solid #eeeeee;
+    }
+    @media(max-width: 992px) {
+        [data-af-filters-view] .af-collection-filters {
+            height: calc(100% - 30px);
+            top: 30px;
+        }
+    }
 </style>
 {% include 'breadcrumb' %}
 <div class="decorated-title-wrapper" id="app" style="min-height: 700px">
@@ -20,8 +32,10 @@
                 filters-col-class="page-content cell-10 cell-10-md cell-12-sm"
                 collections-col-class="page-sidebar cell-2 cell-12-sm">
             <template slot="before-filters">
-                <div class="decorated-title">
-                    {% include "page_header" %}
+                <div class="decorated-title-wrapper">
+                    <div class="decorated-title">
+                        {% include "page_header" %}
+                    </div>
                 </div>
                 {% if settings.category_description_position == 'before_products' and paginate.current_page == 1 %}
 

@@ -1,35 +1,31 @@
 <template>
   <div class="collection-view" data-af-filters-view>
-    <div class="container">
-      <collection-navigation-bar :current-collection="currentCollection" />
-      <div class="row">
-        <div :class="collectionsColClass">
-          <collection-tree ref="collections"
-            ><slot name="collections"></slot
-          ></collection-tree>
-        </div>
-        <div :class="filtersColClass">
-          <slot name="before-filters"></slot>
-          <collection-filters @change="getFiltersAndProducts(false, 1)" />
-          <collection-products
-            ref="productsRef"
-            class="collection-view__products"
-          >
-            <slot name="products"></slot>
-            <template v-slot:product-card="{ productCard }"
-              ><slot
-                name="product-card"
-                v-bind:product-card="productCard"
-              ></slot
-            ></template>
-          </collection-products>
-          <collection-pagination
-            class="collection-view__pagination"
-            @change="getFiltersAndProducts('pagination', $event)"
-          />
-          <slot name="after-filters"></slot>
-        </div>
-      </div>
+    <collection-navigation-bar :current-collection="currentCollection" />
+    <div :class="collectionsColClass">
+      <collection-tree ref="collections"
+        ><slot name="collections"></slot
+      ></collection-tree>
+    </div>
+    <div class="collection-view__content" :class="filtersColClass">
+      <slot name="before-filters"></slot>
+      <collection-filters @change="getFiltersAndProducts(false, 1)" />
+      <collection-products
+        ref="productsRef"
+        class="collection-view__products"
+      >
+        <slot name="products"></slot>
+        <template v-slot:product-card="{ productCard }"
+          ><slot
+            name="product-card"
+            v-bind:product-card="productCard"
+          ></slot
+        ></template>
+      </collection-products>
+      <collection-pagination
+        class="collection-view__pagination"
+        @change="getFiltersAndProducts('pagination', $event)"
+      />
+      <slot name="after-filters"></slot>
     </div>
   </div>
 </template>
@@ -228,6 +224,9 @@ export default {
   .collection-view {
     margin-top: 25px;
     min-height: 700px;
+    &__content {
+      margin-top: 15px;
+    }
     .collection-products {
       margin-top: 35px;
     }
