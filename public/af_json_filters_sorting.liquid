@@ -1,0 +1,36 @@
+{
+id: "sorting",
+title: "Сортировка",
+type: "sorting",
+active: true,
+items: [
+{
+id: "sorting_popularity",
+value: "popularity",
+name: "order",
+title: "По популярности",
+active: {% if order == "popularity" %}true{% else %}false{% endif %}
+},
+{
+id: "sorting_price",
+value: "price",
+name: "order",
+title: "По возрастанию цены",
+active: {% if order == "price" %}true{% else %}false{% endif %}
+},
+{
+id: "sorting_descending_price",
+value: "descending_price",
+name: "order",
+title: "По убыванию цены",
+active: {% if order == "descending_price" %}true{% else %}false{% endif %}
+},
+{
+id: "sorting_discount",
+value: "discount_descending",
+name: "order",
+title: "По скидкам",
+active: {% if order == "discount_descending" %}true{% else %}false{% endif %}
+}
+]
+},

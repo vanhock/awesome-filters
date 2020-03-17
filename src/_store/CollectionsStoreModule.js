@@ -31,7 +31,6 @@ export default {
     hideProductsSlot: false,
     filters: [],
     newFilters: [],
-    sorting: { ...sortingFilterObject() },
     changedFilters: [],
     selectedFilterId: "",
     mobileFilterShow: false,
@@ -99,10 +98,7 @@ export default {
           return;
         }
         f.items.forEach((i, index) => {
-          const defaultSortingOption = f.type === "sorting" && index === 0;
-          i.active && !defaultSortingOption
-            ? (string += `${i.name}=${i.value}&`)
-            : "";
+          i.active ? (string += `${i.name}=${i.value}&`) : "";
         });
       });
       return string.substring(0, string.length - 1);
@@ -147,8 +143,8 @@ export default {
         filters = filters && filters.replace(new RegExp(",]", "g"), "]");
         filters = (filters && JSON.parse(filters)) || [];
       }
-      state.filters = [state.sorting, ...filters];
-      state.newFilters = [state.sorting, ...filters];
+      state.filters = filters;
+      state.newFilters = filters;
     },
     [COLLECTIONS_SET_PRODUCTS](state, payload) {
       if (typeof payload === "string") {
@@ -158,17 +154,10 @@ export default {
       }
       state.hideProductsSlot = true;
     },
-    [COLLECTIONS_SET_PAGINATION](state, { currentPage, total }) {
+    [COLLECTIONS_SET_PAGINATION](state, { currentPage, total, pageSize }) {
       state.paginationCurrentPage = currentPage || 1;
       state.productsTotalCount = total || 0;
-    },
-    [COLLECTIONS_SET_SORTING](state, payload) {
-      if (!payload || !state.sorting["items"]) {
-        return;
-      }
-      state.sorting.items.forEach(item => {
-        item.active = item.id === payload;
-      });
+      state.paginationPageSize = pageSize || 24;
     },
     [COLLECTIONS_SET_SELECTED_FILTER](state, payload) {
       state.selectedFilterId = payload || "";
@@ -179,7 +168,7 @@ export default {
       }
       const tempFilters = [...state.filters];
       tempFilters.some((f, i) => {
-        if (!!f && Object.keys(f).length && f.hasOwnProperty("items")) {
+        if (!!f && Object.keys(f).length && f.hasOwnProperty("items") && f.id === filter.id) {
           return f.items.some((item, index) => {
             /** If passed one filter item as object **/
             if (filter.item) {
@@ -198,7 +187,7 @@ export default {
                   return true;
                 }
               });
-              if (replace && !item.id.includes("sorting")) {
+              if (replace) {
                 item.active = false;
               }
             }
@@ -337,42 +326,3 @@ export default {
     }
   }
 };
-
-function sortingFilterObject() {
-  return {
-    id: "sorting",
-    title: "Сортировка",
-    type: "sorting",
-    active: true,
-    items: [
-      {
-        id: "sorting_popularity",
-        value: "popularity",
-        name: "order",
-        title: "По популярности",
-        active: true
-      },
-      {
-        id: "sorting_price",
-        value: "price",
-        name: "order",
-        title: "По возрастанию цены",
-        active: false
-      },
-      {
-        id: "sorting_descending_price",
-        value: "descending_price",
-        name: "order",
-        title: "По убыванию цены",
-        active: false
-      },
-      {
-        id: "sorting_discount",
-        value: "discount_descending",
-        name: "order",
-        title: "По скидкам",
-        active: false
-      }
-    ]
-  };
-}

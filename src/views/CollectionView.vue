@@ -62,15 +62,13 @@ export default {
   created() {
     /** Set starting data of page  **/
     const currentPage = getParameterByName("page") || 1;
+    const pageSize =  getParameterByName("page_size") || this.pageSize;
     if (currentPage) {
       this.$store.commit(COLLECTIONS_SET_PAGINATION, {
         currentPage: parseInt(currentPage),
-        total: this.productsTotalCount || 0
+        total: this.productsTotalCount || 0,
+        pageSize: pageSize
       });
-    }
-    const currentSorting = getParameterByName("order");
-    if (currentSorting) {
-      this.$store.commit(COLLECTIONS_SET_SORTING, currentSorting);
     }
     if (this.filters && this.filters.length) {
       this.$store.commit(COLLECTIONS_SET_FILTERS, this.filters);
@@ -118,6 +116,10 @@ export default {
     },
     currentCollection: String,
     productsTotalCount: Number,
+    pageSize: {
+      type: Number,
+      default: 24
+    },
     testUrl: String,
     collectionsColClass: {
       type: String,
@@ -180,7 +182,7 @@ export default {
         const url = this.testUrl;
         const query =
           process.env.NODE_ENV === "development"
-            ? location.hash.replace("#/collection", "")
+            ? location.hash.replace("#/", "")
             : "";
         filtersUrl = useSourceUrl ? `${url}${query}` : `${url}?${params}`;
         productsUrl = useSourceUrl
