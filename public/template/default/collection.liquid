@@ -1,124 +1,146 @@
 {% comment %}<!-- Default collection template for Awesome Filters -->{% endcomment %}
 <script data-filters>
-  {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
-  var filters = {{ json_filters | strip | strip_newlines }};
-  var isSeoFilter = "{{ filter.title }}".length > 0;
+    {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
+    var filters = {{ json_filters | strip | strip_newlines }};
+    var isSeoFilter = "{{ filter.title }}".length > 0;
 </script>
-<div id="app" style="min-height: 700px">
-  <div class="container catalog">
+<style>
+    [data-af-filters-view] {
+        margin-top: 15px;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] {
+        padding-bottom: 15px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] span[data-discount]:before {
+        font-size: 16px;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] a {
+        text-decoration: none;
+        color: initial;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] a picture {
+        overflow: hidden;
+    }
+
+</style>
+<div id="app" class="container catalog" style="min-height: 700px">
     {% if search.performed? %}
-      <h1>Поиск: <span>{{search.query}}</span></h1>
+        <h1>Поиск: <span>{{search.query}}</span></h1>
     {% else %}
-      <h1>
-        {% if filter %}
-          {{filter.title}}
-        {% else %}
-          {{collection.title}}
-        {% endif %}
-      </h1>
-    {% endif %}
-  </div>
-  <collection-view
-    :filters="filters"
-    :is-seo-filter="isSeoFilter"
-    :products-total-count="{{ collection.products_count }}"
-    current-collection="{{ collection.title }}">
-    
-    <template slot="collections">
-      <div class="collection-tree__header">
-        Категории
-      </div>
-      <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
-        {%- capture _collection-tree -%}
-        {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}dd{%- endcapture -%}
-        {%- cache cache_menu_key -%}
-        {%- for collection in collections.flatten -%}
-        {%- if collection.show? -%}
-        <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
-          <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}							  	
-            <span class="products-count">{{- collection.products_count -}}</span>
-          </a>
-        </div>
-        {%- endif -%}
-        {%- endfor -%}
-        {%- endcache -%}
-        {%- endcapture -%}
-        {{- _collection-tree | strip | strip_newlines -}}
-      </div>  
-    </template>
-    <template slot="products">
-      <div class="row">
-      {%- paginate products by 24 -%}
-      {%- for product in products -%}
-      {%- if forloop.index >= 9 -%}{%- assign lazyload = true -%}{%- else -%}{%- assign lazyload = false -%}{%- endif -%}
-      
-      <div class="product-card col-6 col-md-4 col-xl-3" data-af-product-card>
-        <div class="labels">
-          {%- capture product-badges -%}
-          {% if product.old_price > product.price and product.price > 0 %}
-          {% assign _discount = product.old_price | minus: product.price | times: 100 | divided_by: product.old_price | round: 0 %}
-          {% if _discount > 0 %}
-          <span data-discount="{{ _discount }}"></span>
-          {% endif %}
-          {% endif %}
-          {% for item in product.properties.special.characteristics %}
-          {% if label.label_id == item.handle %}
-          <span class="{{item.handle}}">{{ item.title }}</span>
-          {% endif %}
-          {% endfor %}
-          {%- endcapture -%}
-          {{ product-badges | strip | strip_newlines }}
-        </div>
-        {% assign product_img_size = product.images | size %}
-        {% assign product_img_width = 268 %}
-        <a href="{{ product.url }}" {% if product_img_size > 1 %}class="change-image"{% endif %}>
-          <picture>
-            <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "webp" }}" type="image/webp" />
-            <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
-            <img
-                 class="{% if lazyload %} lazyload{% endif %}"
-                 alt="{{product.title | default: ' '}}"
-                 title="{{ product.title | default: '' }}" />
-          </picture>
-          {%- if product_img_size > 1 -%}
-          {%- assign image_alt = product.title | append: " - 2" -%}
-          <picture>
-            <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "webp" }}" type="image/webp" />
-            <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
-            <img
-                 class="{% if lazyload %} lazyload{% endif %}"
-                 alt="{{ image_alt | default: ' '}}"
-                 title="{{ image_alt | default: '' }}" />
-          </picture>
-          {%- endif -%}
-          <div class="product-title">{{ product.title }}</div>
-          {%- capture product-price -%}
-          {% assign _price = product.price %}
-          {% if _price == 0 %}
-          {% for variant in product.variants %}
-          {% if variant.price > 0 %}
-          {% assign _price = variant.price %}
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-          <div class="product-price">
-            {% if _price > 0 %}
-            {{ _price | money }}
-            {% if product.old_price > 0 %}
-            <div class="retail">{{ product.old_price | money }}</div>
-            {% endif %}
+        <h1>
+            {% if filter %}
+                {{filter.title}}
             {% else %}
-            Цена уточняется
+                {{collection.title}}
             {% endif %}
-          </div>
-          {%- endcapture -%}
-          {{- product-price | strip | strip_newlines -}}
-        </a>
-      </div>
-      {%- endfor -%}
-      {%- endpaginate -%}
-      </div>
-    </template>
-  </collection-view>
+        </h1>
+    {% endif %}
+    <collection-view
+            class="row"
+            :filters="filters"
+            :is-seo-filter="isSeoFilter"
+            :products-total-count="{{ collection.products_count }}"
+            current-collection="{{ collection.title }}"
+            filters-col-class="page-content cell-10 cell-10-md cell-12-sm"
+            collections-col-class="page-sidebar cell-2 cell-12-sm">
+
+        <template slot="collections">
+            <div class="collection-tree__header">
+                Категории
+            </div>
+            <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
+                {%- capture _collection-tree -%}
+                    {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}dd{%- endcapture -%}
+                    {%- cache cache_menu_key -%}
+                        {%- for collection in collections.flatten -%}
+                            {%- if collection.show? -%}
+                                <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+                                    <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}
+                                        <span class="products-count">{{- collection.products_count -}}</span>
+                                    </a>
+                                </div>
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {%- endcache -%}
+                {%- endcapture -%}
+                {{- _collection-tree | strip | strip_newlines -}}
+            </div>
+        </template>
+        <template slot="products">
+            <div class="row">
+                {%- paginate products by 24 -%}
+                    {%- for product in products -%}
+                        {%- if forloop.index >= 9 -%}{%- assign lazyload = true -%}{%- else -%}{%- assign lazyload = false -%}{%- endif -%}
+
+                        <div class="product-card cell-6-sm cell-3-md" data-af-product-card>
+                            <div class="labels">
+                                {%- capture product-badges -%}
+                                    {% if product.old_price > product.price and product.price > 0 %}
+                                        {% assign _discount = product.old_price | minus: product.price | times: 100 | divided_by: product.old_price | round: 0 %}
+                                        {% if _discount > 0 %}
+                                            <span data-discount="{{ _discount }}"></span>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% for item in product.properties.special.characteristics %}
+                                        {% if label.label_id == item.handle %}
+                                            <span class="{{item.handle}}">{{ item.title }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {%- endcapture -%}
+                                {{ product-badges | strip | strip_newlines }}
+                            </div>
+                            {% assign product_img_size = product.images | size %}
+                            {% assign product_img_width = 268 %}
+                            <a href="{{ product.url }}" {% if product_img_size > 1 %}class="change-image"{% endif %}>
+                                <picture>
+                                    <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "webp" }}" type="image/webp" />
+                                    <source {% if lazyload %}data-{% endif %}srcset="{{ product.first_image | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
+                                    <img
+                                            class="{% if lazyload %} lazyload{% endif %}"
+                                            alt="{{product.title | default: ' '}}"
+                                            title="{{ product.title | default: '' }}" />
+                                </picture>
+                                {%- if product_img_size > 1 -%}
+                                    {%- assign image_alt = product.title | append: " - 2" -%}
+                                    <picture>
+                                        <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "webp" }}" type="image/webp" />
+                                        <source {% if lazyload %}data-{% endif %}srcset="{{ product.images[1] | image_url: product_img_width, format: "jpg" }}" type="image/jpg" />
+                                        <img
+                                                class="{% if lazyload %} lazyload{% endif %}"
+                                                alt="{{ image_alt | default: ' '}}"
+                                                title="{{ image_alt | default: '' }}" />
+                                    </picture>
+                                {%- endif -%}
+                                <div class="product-title">{{ product.title }}</div>
+                                {%- capture product-price -%}
+                                {% assign _price = product.price %}
+                                    {% if _price == 0 %}
+                                        {% for variant in product.variants %}
+                                            {% if variant.price > 0 %}
+                                                {% assign _price = variant.price %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    <div class="product-price">
+                                        {% if _price > 0 %}
+                                            {{ _price | money }}
+                                            {% if product.old_price > 0 %}
+                                                <div class="retail">{{ product.old_price | money }}</div>
+                                            {% endif %}
+                                        {% else %}
+                                            Цена уточняется
+                                        {% endif %}
+                                    </div>
+                                {%- endcapture -%}
+                                {{- product-price | strip | strip_newlines -}}
+                            </a>
+                        </div>
+                    {%- endfor -%}
+                {%- endpaginate -%}
+            </div>
+        </template>
+    </collection-view>
 </div>
 <script src="https://unpkg.com/lazysizes/lazysizes.min.js" defer></script>

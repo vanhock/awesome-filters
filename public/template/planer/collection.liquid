@@ -11,7 +11,7 @@
     [data-af-filters-view] {
         margin: 0 -10px;
     }
-    [data-af-filters-view] .collection-filters {
+    [data-af-filters-view] .af-collection-filters {
         z-index: 1001;
     }
     [data-af-filters-view] .collection-tree__header {
@@ -21,15 +21,20 @@
     [data-af-filters-view] h1 {
         margin-bottom: 0;
         padding-bottom: 10px;
-        margin-top: -9px;
+        margin-top: -17px;
     }
     @media (max-width: 992px) {
         [data-af-filters-view] h1 {
+            margin-top: 15px;
             padding-left: 10px;
             padding-right: 10px;
         }
         .breadcrumb {
             display: none;
+        }
+        [data-af-filters-view] .af-collection-filters {
+            height: calc(100% - 50px);
+            top: 50px;
         }
     }
     [data-af-filters-view] .collection-tree {
@@ -41,6 +46,7 @@
     <div class="collection primary-inner" id="app" style="min-height: 700px">
         <div class="container">
             <collection-view
+                    class="row"
                     :filters="filters"
                     :is-seo-filter="isSeoFilter"
                     :products-total-count="{{ collection.products_count }}"

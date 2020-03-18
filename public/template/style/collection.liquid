@@ -5,16 +5,13 @@
     var isSeoFilter = "{{ filter.title }}".length > 0;
 </script>
 <style>
-    [data-af-filters-view] {
-        margin: 0 -10px;
-    }
     @media (min-width: 992px) {
         .hide-collections {
             display: none
         }
     }
 </style>
-{% include 'breadcrumb' %}
+{% include "breadcrumb", home_title:  messages.home_title %}
 {% include "page_header" %}
 {%- paginate products by 12 -%}
     <div id="app" style="min-height: 700px">
