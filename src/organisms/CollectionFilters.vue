@@ -327,6 +327,7 @@ export default {
     margin-right: -$padding;
     padding-left: $padding;
     padding-right: $padding;
+    z-index: 1002;
     &:before {
       content: "";
       display: block;

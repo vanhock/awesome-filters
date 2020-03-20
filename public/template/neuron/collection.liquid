@@ -1,0 +1,177 @@
+{% comment %}<!-- Нейрон 1.0 collection template for Awesome Filters -->{% endcomment %}
+<script data-filters>
+    {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
+    var filters = {{ json_filters | strip | strip_newlines }};
+    var isSeoFilter = "{{ filter.title }}".length > 0;
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const colEl = document.querySelector(".collection.row");
+    colEl.classList.remove("lg-grid-9", "md-grid-9");
+    colEl.classList.add("lg-grid-12", "md-grid-12");
+  });
+</script>
+<style>
+    .sidebar_block {
+        display: none;
+    }
+
+    [data-af-filters-view] .collection-tree__header {
+        border-bottom: 2px solid #eeeeee;
+    }
+    [data-af-filters-view] .v-radio-checkbox [type=checkbox]:checked+label:after, [data-af-filters-view] .v-radio-checkbox [type=radio]:checked+label:after {
+        left: 8px;
+    }
+</style>
+
+{% paginate products by 12 %}
+    <div class="grid-row">
+        <div class="padded lg-fl">
+            {% include "breadcrumbs" %}
+        </div>
+    </div>
+
+    {% comment %}
+        выводим заголов сео-фильтра или самой коллекции
+    {% endcomment %}
+    <h1 class="collection-title content-title">
+        {% if filter.title %}
+            {{ filter.title }}
+        {% else %}
+            {{ collection.title }}
+        {% endif %}
+    </h1>
+
+    {% comment %}
+        выводим данные только на первой странице пагинации, для СЕО
+    {% endcomment %}
+    {% if paginate.current_page == 1 %}
+        {% comment %}
+            выводим описание сео-фильтра или коллекции.
+        {% endcomment %}
+        {% if settings.collection-description-position == 'before' and paginate.current_page == 1 %}
+            <div class="collection-description--top grid-row">
+                {% unless collection.image.medium_url contains 'no_image' %}
+                    <div class="lg-grid-3 xs-hidden padded-sides">
+                        <img src="{{ collection.image.medium_url }}" />
+                    </div>
+                {% assign description_class = 'lg-grid-9' %}
+                    {% else %}
+                {% assign description_class = 'lg-grid-12' %}
+                {% endunless %}
+
+                {% if filter.description %}
+                    <div class="{{ description_class }} xs-grid-12
+                      padded-sides"
+                    >
+                        {{ filter.description | editable }}
+                    </div>
+                {% else %}
+                    {% if collection.description %}
+                        <div class="{{ description_class }} xs-grid-12
+                        padded-sides"
+                        >
+                            {{ collection.description | editable }}
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endif %}
+    <div id="app">
+        <collection-view
+                class="row"
+                :filters="filters"
+                :is-seo-filter="isSeoFilter"
+                :products-total-count="{{ collection.products_count }}"
+                current-collection="{{ collection.title }}"
+                filters-col-class="page-content sm-grid-12 xs-grid-12 lg-grid-10 md-grid-10"
+                collections-col-class="page-sidebar sm-grid-12 xs-grid-12 lg-grid-2 md-grid-2">
+            <template slot="before-filters">
+
+            </template>
+            <template slot="collections">
+                <div class="collection-tree__header">
+                    Категории
+                </div>
+                <div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
+                    {%- capture _collection-tree -%}
+                        {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}dd{%- endcapture -%}
+                        {%- cache cache_menu_key -%}
+                            {%- for collection in collections.flatten -%}
+                                {%- if collection.show? -%}
+                                    <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+                                        <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}
+                                            <span class="products-count">{{- collection.products_count -}}</span>
+                                        </a>
+                                    </div>
+                                {%- endif -%}
+                            {%- endfor -%}
+                        {%- endcache -%}
+                    {%- endcapture -%}
+                    {{- _collection-tree | strip | strip_newlines -}}
+                </div>
+            </template>
+            <template slot="products">
+                {% if collection.products.size > 0 %}
+                    <div class="collection-products_list
+                      grid-inline
+                      grid-row"
+                    >
+                        {% for product in products %}
+                            <div class="lg-grid-4 sm-grid-4 xs-grid-6 mc-grid-12
+                          padded"
+                            >
+                                {% include 'product_preview' with 'collection' %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </template>
+        </collection-view>
+    </div>
+
+    {% if settings.collection-description-position == 'after' and paginate.current_page == 1 %}
+        {% if filter.description %}
+            <div class="collection-description">
+                {{ filter.description | editable }}
+            </div>
+        {% else %}
+            {% if collection.description %}
+                <div class="collection-description">
+                    {{ collection.description | editable }}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% unless filter %}
+        {% if collection.seo_description and paginate.current_page == 1 %}
+            <div class="collection-seo_description">
+                {{ collection.seo_description | editable }}
+            </div>
+        {% endif %}
+    {% endunless %}
+
+{% endpaginate %}
+
+
+<div class="slider slider--product">
+
+    <div class="slider-title">
+        Вы смотрели
+    </div>
+
+    <div class="slider-container
+                owl-carousel
+                js-recently_view
+                js-slider--recently_view"
+    >
+        {% for product in slider-products %}
+            <div class="padded">
+                {% include "product_preview" %}
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
