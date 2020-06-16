@@ -1,6 +1,6 @@
 <template>
   <div class="collection-view" data-af-filters-view>
-    <collection-navigation-bar :current-collection="currentCollection" />
+    <collection-navigation-bar :current-collection="currentCollection" :title="collectionsMenuTitle" />
     <div :class="collectionsColClass">
       <collection-tree ref="collections"
         ><slot name="collections"></slot
@@ -110,6 +110,7 @@ export default {
       default: () => []
     },
     currentCollection: String,
+    collectionsMenuTitle: String,
     productsTotalCount: Number,
     pageSize: {
       type: Number,

@@ -78,7 +78,7 @@
             </div>
         {% endif %}
     {% endif %}
-    <div id="app">
+    <div id="awesomefilters">
         <collection-view
                 class="row"
                 :filters="filters"
@@ -86,6 +86,7 @@
                 :products-total-count="{{ collection.products_count }}"
                 current-collection="{{ collection.title }}"
                 filters-col-class="page-content sm-grid-12 xs-grid-12 lg-grid-10 md-grid-10"
+                collections-menu-title="Коллекции"
                 collections-col-class="page-sidebar sm-grid-12 xs-grid-12 lg-grid-2 md-grid-2">
             <template slot="before-filters">
 

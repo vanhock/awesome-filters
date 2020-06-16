@@ -33,7 +33,7 @@ class WebApi {
     const querySymbol = path.includes("?") ? "&" : "?";
     const response = await this.service.request({
       method: "GET",
-      url: `${process.env.VUE_APP_PROXY_URL}${path}${
+      url: `${process.env.VUE_APP_PROXY_URL || ''}${path}${
         process.env.NODE_ENV === "development"
           ? `${querySymbol}theme_preview=1355574`
           : ""

@@ -22,7 +22,7 @@
     }
 </style>
 {% include 'breadcrumb' %}
-<div class="decorated-title-wrapper" id="app" style="min-height: 700px">
+<div class="decorated-title-wrapper" id="awesomefilters" style="min-height: 700px">
     {%- paginate products by 12 -%}
         <collection-view
                 class="row"
@@ -31,6 +31,7 @@
                 :products-total-count="{{ collection.products_count }}"
                 current-collection="{{ collection.title }}"
                 filters-col-class="page-content cell-10 cell-10-md cell-12-sm"
+                collections-menu-title="Коллекции"
                 collections-col-class="page-sidebar cell-2 cell-12-sm">
             <template slot="before-filters">
                 <div class="decorated-title-wrapper">

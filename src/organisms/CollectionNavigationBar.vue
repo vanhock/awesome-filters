@@ -19,7 +19,7 @@
         class="collections-toggle mobile-bar__button mobile-bar__left"
         @click="onCollectionButtonClick"
       >
-        <span>Коллекции</span>
+        <span>{{title}}</span>
         <v-icon
           icon="chevron-down"
           :params="{
@@ -56,7 +56,11 @@ export default {
   name: "CollectionNavigationBar",
   components: { VIcon },
   props: {
-    currentCollection: String
+    currentCollection: String,
+    title: {
+      type: String,
+      default: "Коллекции"
+    }
   },
   computed: {
     ...mapGetters([

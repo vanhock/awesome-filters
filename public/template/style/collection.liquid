@@ -14,7 +14,7 @@
 {% include "breadcrumb", home_title:  messages.home_title %}
 {% include "page_header" %}
 {%- paginate products by 12 -%}
-    <div id="app" style="min-height: 700px">
+    <div id="awesomefilters" style="min-height: 700px">
 
         <collection-view
                 :filters="filters"
@@ -24,6 +24,7 @@
                 scrolling-element=".page-wrapper"
                 current-collection="{{ collection.title }}"
                 filters-col-class="collection-inner cell-sm-12"
+                collections-menu-title="Коллекции"
                 collections-col-class="coll-12 hide-collections">
             <template slot="before-filters">
                 {% if settings.category_description_position == 'before_products'  and current_page == null %}

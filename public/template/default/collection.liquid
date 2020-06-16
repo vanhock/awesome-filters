@@ -25,7 +25,7 @@
     }
 
 </style>
-<div id="app" class="container catalog" style="min-height: 700px">
+<div id="awesomefilters" class="container catalog" style="min-height: 700px">
     {% if search.performed? %}
         <h1>Поиск: <span>{{search.query}}</span></h1>
     {% else %}
@@ -44,6 +44,7 @@
             :products-total-count="{{ collection.products_count }}"
             current-collection="{{ collection.title }}"
             filters-col-class="page-content cell-10 cell-10-md cell-12-sm"
+            collections-menu-title="Коллекции"
             collections-col-class="page-sidebar cell-2 cell-12-sm">
 
         <template slot="collections">

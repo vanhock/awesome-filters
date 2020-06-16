@@ -19,7 +19,7 @@
     }
 </style>
 {% include "breadcrumb", home_title: 'Главная' %}
-<div id="app" style="min-height: 700px">
+<div id="awesomefilters" style="min-height: 700px">
     <collection-view
             class="row"
             :filters="filters"
@@ -27,6 +27,7 @@
             :products-total-count="{{ collection.products_count }}"
             current-collection="{{ collection.title }}"
             filters-col-class="cell-10 cell-8-md cell-12-sm"
+            collections-menu-title="Коллекции"
             collections-col-class="cell-2 cell-12-sm">
         <template slot="before-filters">
 

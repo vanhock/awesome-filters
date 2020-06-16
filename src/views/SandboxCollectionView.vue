@@ -5,6 +5,7 @@
       :current-page="currentPage"
       current-collection="Classic"
       test-url="https://myshop-bae277.myinsales.ru/collection/all"
+      collections-menu-title="Категории"
       @update="onUpdate"
     >
       <template v-slot:collections>

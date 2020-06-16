@@ -28,7 +28,7 @@
         }
     }
 </style>
-<div id="app">
+<div id="awesomefilters">
     {% if settings.collection_count.size > 0 %}
         {% assign collection_count = settings.collection_count %}
     {% else %}
@@ -121,6 +121,7 @@
                         current-collection="{{ collection.title }}"
                         filters-col-class="col-12"
                         collections-col-class="col-12 hide-collections"
+                        collections-menu-title="Коллекции"
                         @update="reinitFunctions">
                     <template slot="collections">
                         <div class="collection-tree__header">

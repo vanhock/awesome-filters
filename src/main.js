@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === "production") {
   new Vue({
     store,
     router,
-    el: "#app",
+    el: "#awesomefilters",
     components: { CollectionView }
   });
 } else {
@@ -16,5 +16,5 @@ if (process.env.NODE_ENV === "production") {
     router,
     store,
     render: h => h(SandBox)
-  }).$mount("#app");
+  }).$mount("#awesomefilters");
 }

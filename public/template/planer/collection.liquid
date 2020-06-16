@@ -43,7 +43,7 @@
 </style>
 {% include 'breadcrumb' %}
 {%- paginate products by 12 -%}
-    <div class="collection primary-inner" id="app" style="min-height: 700px">
+    <div class="collection primary-inner" id="awesomefilters" style="min-height: 700px">
         <div class="container">
             <collection-view
                     class="row"
@@ -54,6 +54,7 @@
                     scrolling-element=".page-wrapper"
                     current-collection="{{ collection.title }}"
                     filters-col-class="collection-inner cell-sm-12 cell-xl-10"
+                    collections-menu-title="Коллекции"
                     collections-col-class="collection-aside cell-sm-12 cell-xl-2">
                 <template slot="before-filters">
                     {% if filter.title %}
