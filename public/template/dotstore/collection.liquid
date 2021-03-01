@@ -1,0 +1,124 @@
+{% include 'af_assets_top' %}
+{% comment %}<!-- Collection template for Awesome Filters -->{% endcomment %}
+{% if settings.subcollections_has_products == null %}
+    {% assign show_subcollections = true %}
+    {% elsif collections[collection.handle].products_count > 0 %}
+    {% assign show_subcollections = false %}
+{% else %}
+    {% assign show_subcollections = true %}
+{% endif %}
+{% assign blog_sidebar_show = false %}
+{% assign blog_handle = settings.blog_handle | default: blogs.first.handle %}
+{% if blogs[blog_handle].articles.size > 0 and settings.blog_show %}
+    {% assign blog_sidebar_show = false %}
+{% endif %}
+{% assign filter_sidebar_show = false %}
+{% if settings.collection_filter_position == 'sidebar' and collections[collection.handle].products_count > 1 %}
+    {% assign filter_sidebar_show = true %}
+{% endif %}
+{% if settings.subcollections_sidebar != 'none' or filter_sidebar_show or block_lists.with_template['system-title-and-content'].sidebar-blocks.blocks.size > 0 or blog_sidebar_show == true %}
+    {% assign sidebar_show = true %}
+{% else %}
+    {% assign sidebar_show = false %}
+{% endif %}
+<script data-filters>
+    {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
+    var filters = {{ json_filters | strip | strip_newlines }};
+    var isSeoFilter = "{{ filter.title }}".length > 0;
+    function handleProductsUpdate() {
+      if (window.lazyLoadInstance) window.lazyLoadInstance.update()
+    }
+</script>
+<style>
+    [data-af-filters-view] {
+        margin-top: 15px;
+    }
+    [data-af-filters-view] .af-collection-filters {
+        z-index: 9999999;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] {
+        padding-bottom: 15px;
+        margin-top: 10px;
+        margin-bottom: 15px;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] span[data-discount]:before {
+        font-size: 16px;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] a {
+        text-decoration: none;
+        color: initial;
+    }
+    [data-af-filters-view] .product-card[data-af-product-card] a picture {
+        overflow: hidden;
+    }
+
+</style>
+<div id="awesomefilters" class="container catalog" style="min-height: 700px">
+    {% if search.performed? %}
+        <h1>Поиск: <span>{{search.query}}</span></h1>
+    {% else %}
+        <h1>
+            {% if filter %}
+                {{filter.title}}
+            {% else %}
+                {{collection.title}}
+            {% endif %}
+        </h1>
+    {% endif %}
+    <collection-view
+            class="row"
+            :filters="filters"
+            :is-seo-filter="isSeoFilter"
+            :products-total-count="{{ collection.products_count }}"
+            current-collection="{{ collection.title }}"
+            filters-col-class="page-content col-12{% if sidebar_show %} col-lg-9{% endif %}"
+            collections-menu-title="Коллекции"
+            collections-col-class="page-sidebar col-12 col-lg-3"
+            @update="handleProductsUpdate"
+            @routeUpdate="handleProductsUpdate">
+
+        <template slot="collections">
+            <div class="collection-tree__header">
+                Категории
+            </div>
+            {% comment %}<div class="collection-tree__list{% if collection.level != 0 %} active{% endif %}">
+                {%- capture _collection-tree -%}
+                    {%- capture cache_menu_key -%}cache_menu_key_{{- collections.last_updated_at -}}_{{- collection.handle -}}dd{%- endcapture -%}
+                    {%- cache cache_menu_key -%}
+                        {%- for collection in collections.flatten -%}
+                            {%- if collection.show? -%}
+                                <div class="collection-tree__list__item{% if collection.current? %} active{% endif %}{% if collection.has_subcollections? %} has_child{% endif %}{% if collection.level == 1 %} root{% endif %}">
+                                    <a href="{{- collection.url -}}" class="collection-title">{{- collection.title -}}
+                                        <span class="products-count">{{- collection.products_count -}}</span>
+                                    </a>
+                                </div>
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {%- endcache -%}
+                {%- endcapture -%}
+                {{- _collection-tree | strip | strip_newlines -}}{% endcomment %}
+                {% include 'sidebar' %}
+            </div>
+        </template>
+        <template slot="products">
+            <div id="insales-section-collection" class="insales-section insales-section-collection">
+                <div class="products">
+                    <div class="row js-products-row">
+                        {% if paginate.current_page > 1 %}
+                            <div class="col-12">
+                                <div class="pagination-separator">
+                                    <span>{{ messages.pagination_page }} {{ current_page }}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% for product in collection.products %}
+                            <div class="col-6 col-sm-6 col-md-4 col-lg-{% if sidebar_show %}4{% else %}3{% endif %}">
+                                {% include 'product_card' %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </template>
+    </collection-view>
+</div>

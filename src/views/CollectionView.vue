@@ -73,6 +73,9 @@ export default {
         hideCollectionsMenu: true
       });
     }
+    this.$router.afterEach(() => {
+      this.$emit("routeUpdate");
+    });
   },
   mounted() {
     if (
