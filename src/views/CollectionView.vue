@@ -89,7 +89,6 @@ export default {
         return next();
       }
       console.log("On router change");
-      this.$emit("routeUpdate");
       this.getFiltersAndProducts("router");
       next();
     });
@@ -212,6 +211,7 @@ export default {
         await this.$router.push(targetRouteUrl);
         this.$emit("update");
       }
+      if (source === "router") this.$emit("routeUpdate");
     }
   }
 };
