@@ -73,9 +73,6 @@ export default {
         hideCollectionsMenu: true
       });
     }
-    this.$router.afterEach(() => {
-      this.$emit("routeUpdate");
-    });
   },
   mounted() {
     if (
@@ -92,6 +89,7 @@ export default {
         return next();
       }
       console.log("On router change");
+      this.$emit("routeUpdate");
       this.getFiltersAndProducts("router");
       next();
     });

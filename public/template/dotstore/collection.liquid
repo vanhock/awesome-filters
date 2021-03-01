@@ -25,9 +25,14 @@
     {%- capture json_filters -%}{%- include "af_json_filters" -%}{%- endcapture -%}
     var filters = {{ json_filters | strip | strip_newlines }};
     var isSeoFilter = "{{ filter.title }}".length > 0;
+
     function handleProductsUpdate() {
-      if (window.lazyLoadInstance) window.lazyLoadInstance.update()
+      if (window.lazyLoadInstance) window.lazyLoadInstance.update();
     }
+    function handlePopstate() {
+      setTimeout(handleProductsUpdate, 1000);
+    }
+    window.addEventListener("popstate", handlePopstate);
 </script>
 <style>
     [data-af-filters-view] {
@@ -74,8 +79,7 @@
             filters-col-class="page-content col-12{% if sidebar_show %} col-lg-9{% endif %}"
             collections-menu-title="Коллекции"
             collections-col-class="page-sidebar col-12 col-lg-3"
-            @update="handleProductsUpdate"
-            @routeUpdate="handleProductsUpdate">
+            @update="handleProductsUpdate">
 
         <template slot="collections">
             <div class="collection-tree__header">
